@@ -1,0 +1,160 @@
+[gd_scene load_steps=7 format=3 uid="uid://c26jqoq0uqo1a"]
+
+[ext_resource type="Script" uid="uid://bvcchesggw2ij" path="res://scripts/pet_script.gd" id="1_5v8d0"]
+[ext_resource type="Script" uid="uid://cegqvt7t3u3oy" path="res://scripts/menu_script.gd" id="2_5w45p"]
+[ext_resource type="Script" uid="uid://ddiilem771nhg" path="res://scripts/sound_manager.gd" id="2_pu3yx"]
+[ext_resource type="AudioStream" uid="uid://cd2q1gpit8bmc" path="res://assets/sounds/stab-f-01-brvhrtz-224599.mp3" id="3_gubc5"]
+[ext_resource type="Script" uid="uid://cds68bdmgw1tt" path="res://scripts/state_machine.gd" id="4_gubc5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w1q0g"]
+
+[node name="MainScene" type="Node2D"]
+
+[node name="Pet" type="AnimatedSprite2D" parent="."]
+position = Vector2(200, 214)
+sprite_frames = SubResource("SpriteFrames_w1q0g")
+script = ExtResource("1_5v8d0")
+
+[node name="SoundManager" type="Node" parent="."]
+script = ExtResource("2_pu3yx")
+
+[node name="AudioPlacement" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource("3_gubc5")
+
+[node name="AudioFeeding" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource("3_gubc5")
+
+[node name="AudioPetting" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource("3_gubc5")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_gubc5")
+pet_node = NodePath("../Pet")
+sound_manager_node = NodePath("../SoundManager")
+
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 107.0
+offset_top = 111.0
+offset_right = 107.0
+offset_bottom = 111.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_5w45p")
+
+[node name="MainMenu" type="VBoxContainer" parent="Menu"]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 228.0
+offset_right = 210.0
+offset_bottom = 399.0
+
+[node name="PlacementButton" type="Button" parent="Menu/MainMenu"]
+layout_mode = 2
+text = "放置"
+
+[node name="FeedingButton" type="Button" parent="Menu/MainMenu"]
+layout_mode = 2
+text = "投喂"
+
+[node name="PettingButton" type="Button" parent="Menu/MainMenu"]
+layout_mode = 2
+text = "抚摸"
+
+[node name="SettingsButton" type="Button" parent="Menu/MainMenu"]
+layout_mode = 2
+text = "设置"
+
+[node name="SettingsPanel" type="PanelContainer" parent="Menu"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -47.0
+offset_top = -41.0
+offset_right = 253.0
+offset_bottom = 259.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/SettingsPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Menu/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+text = "设置菜单"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Menu/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="Menu/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="LabelInitial" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "初始动画"
+
+[node name="ChangeInitialButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "更换精灵表"
+
+[node name="LabelPlacement" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "放置动画"
+
+[node name="ChangePlacementButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "更换精灵表"
+
+[node name="LabelFeeding" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "投喂动画"
+
+[node name="ChangeFeedingButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "更换精灵表"
+
+[node name="LabelPetting" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "抚摸动画"
+
+[node name="ChangePettingButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "更换精灵表"
+
+[node name="HSeparator2" type="HSeparator" parent="Menu/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScaleHBox" type="HBoxContainer" parent="Menu/SettingsPanel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="LabelScale" type="Label" parent="Menu/SettingsPanel/VBoxContainer/ScaleHBox"]
+layout_mode = 2
+text = "缩放"
+
+[node name="ScaleSlider" type="HSlider" parent="Menu/SettingsPanel/VBoxContainer/ScaleHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 2.0
+step = 0.1
+value = 1.0
+
+[node name="FileDialog" type="FileDialog" parent="Menu"]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(500, 400)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png ; PNG Images", "*.jpg; JPG Images", "*.svg; SVG Images")
+use_native_dialog = true

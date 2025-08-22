@@ -1,0 +1,162 @@
+[gd_scene load_steps=15 format=3 uid="uid://dlxrg1jyacm3b"]
+
+[ext_resource type="Script" uid="uid://bvcchesggw2ij" path="res://scripts/pet_script.gd" id="1"]
+[ext_resource type="Script" uid="uid://cds68bdmgw1tt" path="res://scripts/state_machine.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://bq1y1h2ydkkk3" path="res://assets/animations/idle.png" id="2_c16ls"]
+[ext_resource type="Script" uid="uid://ddiilem771nhg" path="res://scripts/sound_manager.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://cc1hwrx5e8jwv" path="res://assets/animations/feeding.png" id="3_18nlu"]
+[ext_resource type="PackedScene" uid="uid://ct23k8ad0xyt8" path="res://scenes/settings_menu.tscn" id="4"]
+[ext_resource type="Texture2D" uid="uid://d3p3bs0evwlmu" path="res://assets/animations/petting.png" id="4_c1pb6"]
+[ext_resource type="AudioStream" uid="uid://cd2q1gpit8bmc" path="res://assets/sounds/stab-f-01-brvhrtz-224599.mp3" id="8_c1pb6"]
+
+[sub_resource type="Animation" id="Animation_e1cbu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/Feeding:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/Idle:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationPlayer/Petting:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_18nlu"]
+resource_name = "default"
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_6wevv"]
+resource_name = "feeding"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/Feeding:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+
+[sub_resource type="Animation" id="Animation_rt2n2"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/Idle:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+
+[sub_resource type="Animation" id="Animation_mngbo"]
+resource_name = "petting"
+loop_mode = 1
+step = 0.333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/Petting:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.333333, 0.666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [1, 0, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pu3yx"]
+_data = {
+&"RESET": SubResource("Animation_e1cbu"),
+&"default": SubResource("Animation_18nlu"),
+&"feeding": SubResource("Animation_6wevv"),
+&"idle": SubResource("Animation_rt2n2"),
+&"petting": SubResource("Animation_mngbo")
+}
+
+[node name="MainScene" type="Node2D"]
+
+[node name="Pet" type="Node2D" parent="."]
+script = ExtResource("1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Pet"]
+libraries = {
+&"": SubResource("AnimationLibrary_pu3yx")
+}
+
+[node name="Idle" type="Sprite2D" parent="Pet/AnimationPlayer"]
+position = Vector2(106, 158)
+texture = ExtResource("2_c16ls")
+hframes = 3
+vframes = 3
+
+[node name="Feeding" type="Sprite2D" parent="Pet/AnimationPlayer"]
+visible = false
+position = Vector2(154, 217)
+texture = ExtResource("3_18nlu")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="Petting" type="Sprite2D" parent="Pet/AnimationPlayer"]
+visible = false
+position = Vector2(154, 217)
+texture = ExtResource("4_c1pb6")
+hframes = 2
+vframes = 2
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("2")
+pet_node = NodePath("../Pet")
+
+[node name="SoundManager" type="Node" parent="."]
+script = ExtResource("3")
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource("8_c1pb6")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="SettingsMenu" parent="UI" instance=ExtResource("4")]
+offset_left = 267.0
+offset_top = 107.0
+offset_right = 267.0
+offset_bottom = 107.0
+pet_node = NodePath("../../Pet")
+state_machine_node = NodePath("../../StateMachine")
