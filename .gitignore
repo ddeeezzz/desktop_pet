@@ -1,3 +1,14 @@
 # Godot 4+ specific ignores
 .godot/
-/android/
+
+# Visual Studio Code
+.vscode/
+
+# assets
+assets/animations/
+assets/images/
+assets/sounds/
+
+# other
+TODO.md
+GEMINI.md
