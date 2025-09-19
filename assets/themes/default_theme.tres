@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://ya1krjuwq65b"]
+
+[ext_resource type="FontFile" uid="uid://d06n6e3x2ar24" path="res://assets/fonts/Unifontexmono-2vrqo.ttf" id="1_sx0q5"]
+
+[resource]
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_sx0q5")
+Label/font_sizes/font_size = 16
+Label/fonts/font = ExtResource("1_sx0q5")
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20

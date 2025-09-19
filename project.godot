@@ -12,22 +12,44 @@ config_version=5
 
 config/name="DesktopPet"
 run/main_scene="uid://c26jqoq0uqo1a"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/use_custom_user_dir=true
+config/custom_user_dir_name="DesktopPetData"
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[audio]
+
+driver/driver="Dummy"
+
+[autoload]
+
+EventBus="*res://scripts/core/event_bus.gd"
+ApiManager="*res://scripts/Clickthrough/ApiManager.cs"
+MouseDetection="*res://scripts/Clickthrough/MouseDetection.cs"
 
 [display]
 
-window/size/viewport_width=400
-window/size/viewport_height=500
+window/size/viewport_width=512
+window/size/viewport_height=512
+window/size/borderless=true
 window/size/always_on_top=true
 window/size/transparent=true
+window/subwindows/embed_subwindows=false
+window/stretch/mode="viewport"
 window/per_pixel_transparency/allowed=true
 
 [dotnet]
 
 project/assembly_name="DesktopPet"
 
+[editor]
+
+movie_writer/movie_file="G:/gm/dp/test.avi"
+movie_writer/disable_vsync=true
+
 [rendering]
 
 textures/canvas_textures/default_texture_repeat=1
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 viewport/transparent_background=true

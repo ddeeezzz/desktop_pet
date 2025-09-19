@@ -1,155 +1,455 @@
-[gd_scene load_steps=7 format=3 uid="uid://c26jqoq0uqo1a"]
+[gd_scene load_steps=27 format=3 uid="uid://c26jqoq0uqo1a"]
 
-[ext_resource type="Script" uid="uid://bvcchesggw2ij" path="res://scripts/pet_script.gd" id="1_5v8d0"]
-[ext_resource type="Script" uid="uid://cegqvt7t3u3oy" path="res://scripts/menu_script.gd" id="2_5w45p"]
-[ext_resource type="Script" uid="uid://ddiilem771nhg" path="res://scripts/sound_manager.gd" id="2_pu3yx"]
-[ext_resource type="AudioStream" uid="uid://cd2q1gpit8bmc" path="res://assets/sounds/stab-f-01-brvhrtz-224599.mp3" id="3_gubc5"]
-[ext_resource type="Script" uid="uid://cds68bdmgw1tt" path="res://scripts/state_machine.gd" id="4_gubc5"]
+[ext_resource type="Texture2D" uid="uid://d08k7r4jyniti" path="res://assets/animations/cloud.png" id="1_6wevv"]
+[ext_resource type="Texture2D" uid="uid://c4cvumexytgfc" path="res://assets/animations/petting.png" id="1_c1pb6"]
+[ext_resource type="Script" uid="uid://b6na06oxqxgay" path="res://scripts/main_integration.gd" id="1_e1cbu"]
+[ext_resource type="Script" uid="uid://by3pfm20yst4e" path="res://scripts/managers/animation_manager.gd" id="2_4w45t"]
+[ext_resource type="Texture2D" uid="uid://y2jliwlse25f" path="res://assets/animations/init.png" id="2_6wevv"]
+[ext_resource type="Script" uid="uid://ojiaoq0v13b5" path="res://scripts/managers/config_manager.gd" id="2_mngbo"]
+[ext_resource type="Script" uid="uid://yjmv1shmdl8g" path="res://scripts/controllers/pet_controller.gd" id="4_c1pb6"]
+[ext_resource type="Script" uid="uid://c1y3ma6gv1bqt" path="res://scripts/managers/theme_manager.gd" id="6_4w45t"]
+[ext_resource type="Theme" uid="uid://ya1krjuwq65b" path="res://assets/themes/default_theme.tres" id="7_18nlu"]
+[ext_resource type="Script" uid="uid://bpy08us5bxcjp" path="res://scripts/managers/ai_manager.gd" id="7_r6p65"]
+[ext_resource type="Texture2D" uid="uid://d3usns51oemr5" path="res://assets/animations/placement.png" id="8_01n6w"]
+[ext_resource type="Texture2D" uid="uid://tc43kjrsar3d" path="res://assets/animations/feeding.png" id="8_si52b"]
+[ext_resource type="Script" uid="uid://bu6opn1o0c1il" path="res://scripts/controllers/menu_controller.gd" id="9_6wevv"]
+[ext_resource type="Script" uid="uid://bqk1hj48h3dk" path="res://scripts/components/draggable.gd" id="11_4w45t"]
+[ext_resource type="Script" uid="uid://b120i1hdmn2aq" path="res://scripts/components/hover_detector.gd" id="12_4w45t"]
+[ext_resource type="Script" uid="uid://cafpqtn0csr5h" path="res://scripts/components/panel_switcher.gd" id="12_mngbo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mngbo"]
+atlas = ExtResource("1_c1pb6")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4w45t"]
+atlas = ExtResource("2_6wevv")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1cbu"]
+atlas = ExtResource("1_c1pb6")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_01n6w"]
+atlas = ExtResource("8_si52b")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6u1mn"]
+atlas = ExtResource("8_01n6w")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6p65"]
+atlas = ExtResource("1_6wevv")
+region = Rect2(512, 0, 256, 256)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_w1q0g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mngbo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4w45t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1cbu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_01n6w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6u1mn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6p65")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1pb6"]
+atlas = ExtResource("1_6wevv")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c1pb6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c1pb6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(128, 128)
 
 [node name="MainScene" type="Node2D"]
+script = ExtResource("1_e1cbu")
+
+[node name="AnimationManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_4w45t")
+metadata/_custom_type_script = "uid://by3pfm20yst4e"
+
+[node name="ConfigManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_mngbo")
+metadata/_custom_type_script = "uid://ojiaoq0v13b5"
+
+[node name="PetController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_c1pb6")
+metadata/_custom_type_script = "uid://yjmv1shmdl8g"
+
+[node name="MenuController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("9_6wevv")
+metadata/_custom_type_script = "uid://bu6opn1o0c1il"
+
+[node name="ThemeManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_4w45t")
+metadata/_custom_type_script = "uid://c1y3ma6gv1bqt"
+
+[node name="AIManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_r6p65")
+metadata/_custom_type_script = "uid://bpy08us5bxcjp"
 
 [node name="Pet" type="AnimatedSprite2D" parent="."]
-position = Vector2(200, 214)
+unique_name_in_owner = true
+position = Vector2(256, 256)
 sprite_frames = SubResource("SpriteFrames_w1q0g")
-script = ExtResource("1_5v8d0")
+metadata/_edit_group_ = true
 
-[node name="SoundManager" type="Node" parent="."]
-script = ExtResource("2_pu3yx")
+[node name="Draggable" type="Node" parent="Pet"]
+unique_name_in_owner = true
+script = ExtResource("11_4w45t")
+metadata/_custom_type_script = "uid://bqk1hj48h3dk"
 
-[node name="AudioPlacement" type="AudioStreamPlayer" parent="SoundManager"]
-stream = ExtResource("3_gubc5")
+[node name="Cloud" type="AnimatedSprite2D" parent="Pet"]
+unique_name_in_owner = true
+visible = false
+z_index = 100
+sprite_frames = SubResource("SpriteFrames_c1pb6")
 
-[node name="AudioFeeding" type="AudioStreamPlayer" parent="SoundManager"]
-stream = ExtResource("3_gubc5")
+[node name="CloudButton" type="Button" parent="Pet/Cloud"]
+unique_name_in_owner = true
+offset_left = 36.0
+offset_top = -119.0
+offset_right = 118.0
+offset_bottom = -63.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
 
-[node name="AudioPetting" type="AudioStreamPlayer" parent="SoundManager"]
-stream = ExtResource("3_gubc5")
+[node name="PetArea" type="Area2D" parent="Pet"]
+unique_name_in_owner = true
+scale = Vector2(2, 2)
+metadata/_edit_group_ = true
 
-[node name="StateMachine" type="Node" parent="."]
-script = ExtResource("4_gubc5")
-pet_node = NodePath("../Pet")
-sound_manager_node = NodePath("../SoundManager")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pet/PetArea"]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="HoverDetector" type="Node" parent="Pet/PetArea"]
+unique_name_in_owner = true
+script = ExtResource("12_4w45t")
+metadata/_custom_type_script = "uid://b120i1hdmn2aq"
 
 [node name="Menu" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
 layout_mode = 3
+anchors_preset = 0
+offset_left = 384.0
+offset_top = 165.0
+offset_right = 444.0
+offset_bottom = 345.0
+theme = ExtResource("7_18nlu")
+
+[node name="MainMenu" type="VBoxContainer" parent="Menu"]
+unique_name_in_owner = true
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 107.0
-offset_top = 111.0
-offset_right = 107.0
-offset_bottom = 111.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_5w45p")
-
-[node name="MainMenu" type="VBoxContainer" parent="Menu"]
-layout_mode = 0
-offset_left = 110.0
-offset_top = 228.0
-offset_right = 210.0
-offset_bottom = 399.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="PlacementButton" type="Button" parent="Menu/MainMenu"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
+toggle_mode = true
 text = "放置"
 
 [node name="FeedingButton" type="Button" parent="Menu/MainMenu"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 text = "投喂"
 
 [node name="PettingButton" type="Button" parent="Menu/MainMenu"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 text = "抚摸"
 
-[node name="SettingsButton" type="Button" parent="Menu/MainMenu"]
+[node name="AIChatButton" type="Button" parent="Menu/MainMenu"]
+unique_name_in_owner = true
 layout_mode = 2
+text = "AI聊天"
+
+[node name="SettingsButton" type="Button" parent="Menu/MainMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
 text = "设置"
 
-[node name="SettingsPanel" type="PanelContainer" parent="Menu"]
+[node name="CloseButton" type="Button" parent="Menu/MainMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "关闭菜单"
+
+[node name="ExitButton" type="Button" parent="Menu/MainMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "退出"
+
+[node name="SettingsWindow" type="Window" parent="Menu"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+position = Vector2i(400, 300)
+size = Vector2i(450, 350)
 visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -47.0
-offset_top = -41.0
-offset_right = 253.0
-offset_bottom = 259.0
+theme = ExtResource("7_18nlu")
+
+[node name="PanelSwitcher" type="Node" parent="Menu/SettingsWindow" node_paths=PackedStringArray("buttons", "panels")]
+script = ExtResource("12_mngbo")
+buttons = [NodePath("../MainContainer/Sidebar/AppearanceButton"), NodePath("../MainContainer/Sidebar/APIButton"), NodePath("../MainContainer/Sidebar/InterfaceButton")]
+panels = [NodePath("../MainContainer/ContentArea/AppearancePanel"), NodePath("../MainContainer/ContentArea/APIPanel"), NodePath("../MainContainer/ContentArea/InterfacePanel")]
+metadata/_custom_type_script = "uid://cafpqtn0csr5h"
+
+[node name="MainContainer" type="HBoxContainer" parent="Menu/SettingsWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Menu/SettingsPanel"]
+[node name="Sidebar" type="VBoxContainer" parent="Menu/SettingsWindow/MainContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="AppearanceButton" type="Button" parent="Menu/SettingsWindow/MainContainer/Sidebar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+toggle_mode = true
+button_pressed = true
+text = "形象"
+
+[node name="APIButton" type="Button" parent="Menu/SettingsWindow/MainContainer/Sidebar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+toggle_mode = true
+text = "API"
+
+[node name="InterfaceButton" type="Button" parent="Menu/SettingsWindow/MainContainer/Sidebar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+toggle_mode = true
+text = "界面"
+
+[node name="ConfigButton" type="Button" parent="Menu/SettingsWindow/MainContainer/Sidebar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "配置文件"
+
+[node name="ContentArea" type="Control" parent="Menu/SettingsWindow/MainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AppearancePanel" type="ScrollContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Menu/SettingsPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "设置菜单"
+text = "形象设置"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Menu/SettingsPanel/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="Menu/SettingsPanel/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="LabelInitial" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="LabelInitial" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "初始动画"
 
-[node name="ChangeInitialButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="ChangeInitialButton" type="Button" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "更换精灵表"
 
-[node name="LabelPlacement" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="LabelPlacement" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "放置动画"
 
-[node name="ChangePlacementButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="ChangePlacementButton" type="Button" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "更换精灵表"
 
-[node name="LabelFeeding" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="LabelFeeding" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "投喂动画"
 
-[node name="ChangeFeedingButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="ChangeFeedingButton" type="Button" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "更换精灵表"
 
-[node name="LabelPetting" type="Label" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="LabelPetting" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "抚摸动画"
 
-[node name="ChangePettingButton" type="Button" parent="Menu/SettingsPanel/VBoxContainer/GridContainer"]
+[node name="ChangePettingButton" type="Button" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "更换精灵表"
 
-[node name="HSeparator2" type="HSeparator" parent="Menu/SettingsPanel/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ScaleHBox" type="HBoxContainer" parent="Menu/SettingsPanel/VBoxContainer"]
+[node name="ScaleHBox" type="HBoxContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="LabelScale" type="Label" parent="Menu/SettingsPanel/VBoxContainer/ScaleHBox"]
+[node name="LabelScale" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/ScaleHBox"]
 layout_mode = 2
 text = "缩放"
 
-[node name="ScaleSlider" type="HSlider" parent="Menu/SettingsPanel/VBoxContainer/ScaleHBox"]
+[node name="ScaleSlider" type="HSlider" parent="Menu/SettingsWindow/MainContainer/ContentArea/AppearancePanel/MarginContainer/VBoxContainer/ScaleHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 0.1
-max_value = 2.0
-step = 0.1
+min_value = 0.8
+max_value = 1.5
+step = 0.01
 value = 1.0
 
+[node name="APIPanel" type="ScrollContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/APIPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/APIPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/APIPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "API设置"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Menu/SettingsWindow/MainContainer/ContentArea/APIPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PlaceholderLabel" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/APIPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "即将推出..."
+horizontal_alignment = 1
+
+[node name="InterfacePanel" type="ScrollContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "界面设置"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeLabel" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "主题选择"
+
+[node name="ThemeOptionButton" type="OptionButton" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "Default"
+popup/item_0/id = 0
+
+[node name="HSeparator2" type="HSeparator" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ThemeCustomLabel" type="Label" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "自定义主题"
+
+[node name="ThemeEditButton" type="Button" parent="Menu/SettingsWindow/MainContainer/ContentArea/InterfacePanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "编辑主题文件"
+
 [node name="FileDialog" type="FileDialog" parent="Menu"]
+unique_name_in_owner = true
+auto_translate_mode = 1
 title = "Open a File"
 initial_position = 1
 size = Vector2i(500, 400)
@@ -158,3 +458,12 @@ file_mode = 0
 access = 2
 filters = PackedStringArray("*.png ; PNG Images", "*.jpg; JPG Images", "*.svg; SVG Images")
 use_native_dialog = true
+
+[node name="ConfigConfirmDialog" type="AcceptDialog" parent="Menu"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+title = "打开配置文件"
+initial_position = 1
+size = Vector2i(350, 120)
+ok_button_text = "确定"
+dialog_text = "确定要打开配置文件吗？修改后请保存并关闭编辑器，游戏将自动重新加载配置。"

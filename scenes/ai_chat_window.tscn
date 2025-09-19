@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://t162hod5d2ds"]
+
+[ext_resource type="Script" uid="uid://dwqqalsp866ey" path="res://scripts/components/ai_chat_window.gd" id="1_abcde"]
+[ext_resource type="Theme" uid="uid://ya1krjuwq65b" path="res://assets/themes/default_theme.tres" id="2_ahyda"]
+
+[node name="ai_chat_window" type="Window"]
+position = Vector2i(0, 36)
+script = ExtResource("1_abcde")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ahyda")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="MessageScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MessageDisplay" type="RichTextLabel" parent="PanelContainer/VBoxContainer/MessageScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+selection_enabled = true
+
+[node name="InputArea" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UserInput" type="LineEdit" parent="PanelContainer/VBoxContainer/InputArea"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "在这里输入消息..."
+
+[node name="SendButton" type="Button" parent="PanelContainer/VBoxContainer/InputArea"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "发送"

@@ -1,109 +1,211 @@
-# 桌宠模拟器（Desktop Pet Simulator）
+# Desktop Pet (桌面宠物)
 
-一个基于 Godot 的简洁桌宠示例项目，演示多状态精灵表动画、拖拽移动、缩放控制、状态机与配置保存。代码结构和行为以 `res://scripts/` 下的脚本为主，运行时会读取并写入 `user://setting.json` 作为持久化配置。
+一个使用 Godot 4.4 引擎开发的桌面宠物应用程序，具有丰富动画和可拖拽的交互式界面。
 
-主要特性
+## 项目亮点
 
-- 多状态动画：INITIAL / PLACEMENT / FEEDING / PETTING
-- 精灵表（Sprite2D）按状态显示与动画播放
-- 窗口/宠物拖拽支持（可拖动窗口以移动桌宠）
-- 缩放控制并保存到用户配置
-- 动态加载与保存动画纹理与参数
-- 简单音效管理：按状态播放对应音效
+### 🎨 配置驱动的动画系统
+- **配置文件动画定义** - 通过配置文件直接定义精灵图和动画参数，无需预制资源
+- **动态动画注册** - 运行时从配置文件读取精灵图并自动注册动画
+- **灵活的帧控制** - 支持自定义帧数、帧率和每帧持续时间
+- **热重载功能** - 支持动画资源的实时重新加载，无需重启应用
 
-快速开始
+### 🖱️ 高级输入管理系统
+- **状态机驱动** - 使用状态机管理不同的输入模式（正常、拖拽、菜单等）
+- **组件化设计** - 拖拽、悬停检测等功能模块化，可重用
+- **智能悬停检测** - 支持悬停超时和离开超时的精确控制
+- **点击穿透技术** - 使用 C# 实现 Windows API 调用，支持桌面点击穿透
 
-1. 安装 Godot 4.x（推荐最新稳定版）。
-2. 在 Godot 中打开本项目根目录（包含 `project.godot`）。
-3. 打开场景 `res://scenes/main_scene.tscn` 并运行。
+### 🏗️ 模块化架构设计
+- **事件总线系统** - 全局事件总线实现模块间解耦通信
+- **管理器模式** - 配置、动画、主题等功能独立管理
+- **异步初始化** - 确保组件初始化顺序，避免依赖问题
+- **控制器分离** - 宠物行为和菜单逻辑独立控制
 
-项目运行时数据
+### 🪟 桌面集成特性
+- **透明无边框窗口** - 完美融入桌面环境
+- **窗口置顶** - 始终显示在其他窗口上方
+- **自适应缩放** - 支持宠物大小的动态调整
+- **桌面拖拽** - 可在桌面任意位置拖拽移动
 
-- 运行时配置文件（读写）：`user://settings.cfg`（若不存在，会从 `res://data/settings.cfg` 复制一份作为模板）
-- 配置格式：使用 Godot 的 ConfigFile（*.cfg），采用节（section）与键值对保存设置，而非 JSON。
-- 推荐 cfg 结构示例：
+## 功能特性
 
+- 🐾 **桌面宠物** - 带有多种动画状态的桌面宠物
+- 🎨 **配置化动画系统** - 通过配置文件定义和加载动画
+- 🚧 **AI 聊天功能** - 基础 AI API 接口（开发中）
+- 🖱️ **可拖拽界面** - 宠物可以在桌面上自由拖拽移动（右键）
+- 🎯 **悬停检测** - 鼠标悬停时显示交互提示
+- ⚙️ **配置管理** - 支持自定义设置和配置保存
+- 🎭 **主题系统** - 支持可定制的界面主题
+- 🪟 **透明窗口** - 无边框透明窗口，完美融入桌面
+
+## 系统要求
+
+- Windows 系统
+- .NET 8.0 运行时
+- Godot 4.4+ (开发环境)
+
+## 安装与运行
+
+### 直接运行
+1. 下载最新的发布版本
+2. 解压到任意目录
+3. 运行 `DesktopPet.exe`
+
+### 从源码构建
+1. 克隆此仓库
+2. 安装 Godot 4.4+
+3. 在 Godot 编辑器中打开项目
+4. 导出为 Windows 可执行文件
+
+## 配置说明
+
+### 动画配置
+项目使用配置文件来定义动画，支持自定义精灵图导入：
+
+```ini
+[animation_initial]
+texture="res://assets/animations/init.png"
+hframes=3
+vframes=2
+frames=5
+fps=8.0
+frame_durations={"0": 2.0, "1": 1.0, "2": 2.0, "3": 1.0, "4": 10.0}
 ```
+
+### AI 功能配置 (实验性功能)
+AI 聊天功能目前处于开发阶段：
+
+```ini
+[ai]
+enabled=false
+provider="your_provider"
+api_key="your_api_key_here"
+model="your_model"
+url="your_api_url"
+```
+
+### 宠物设置
+```ini
 [pet]
 scale=1.0
-
-[animations.initial]
-texture="res://assets/animations/initial.png"
-hframes=1
-vframes=1
-
-[animations.placement]
-texture="res://assets/animations/placement.png"
-hframes=1
-vframes=1
 ```
 
-说明：
-- `pet.scale`（在 `[pet]` 节）用于保存宠物缩放。
-- 每个动画使用单独节（如 `[animations.initial]`）保存 `texture`、`hframes`、`vframes` 等参数。
-- `pet_script.gd` 中的加载/保存函数应使用 `ConfigFile` 读写 `user://settings.cfg`。
+### 界面设置
+```ini
+[interface]
+theme="default"
+```
 
-场景与节点（重要路径）
+配置文件位置：`%APPDATA%/DesktopPetData/settings.cfg`
 
-- 主场景：`/root/MainScene`（节点名 MainScene）
-  - `/root/MainScene/Pet`（脚本：`res://scripts/pet_script.gd`）
-    - 子节点（Sprite2D 或帧动画节点）：`Initial`, `Placement`, `Feeding`, `Petting`
-    - `AnimationPlayer`（包含与状态同名的动画轨道）
-  - `/root/MainScene/SoundManager`（脚本：`res://scripts/sound_manager.gd`）
-    - 子节点（AudioStreamPlayer）：`AudioInitial`, `AudioPlacement`, `AudioFeeding`, `AudioPetting`
+## 项目结构
 
-重要脚本与 API 摘要
+```
+DesktopPet/
+├── assets/                 # 资源文件
+│   ├── animations/         # 动画精灵图
+│   ├── fonts/             # 字体文件
+│   └── themes/            # 主题资源
+├── scenes/                # Godot 场景文件
+│   ├── main_scene.tscn    # 主场景
+│   └── ai_chat_window.tscn # AI 聊天窗口
+├── scripts/               # 脚本文件
+│   ├── core/              # 核心系统
+│   ├── managers/          # 管理器类
+│   ├── controllers/       # 控制器类
+│   ├── components/        # UI 组件
+│   ├── utils/             # 工具类
+│   └── Clickthrough/      # 点击穿透功能 (C#)
+└── 配置文件模板/          # 配置文件模板
+```
 
-- res://scripts/pet_script.gd
-  - 负责：加载/应用动画配置、管理状态显示、拖拽/窗口移动、缩放保存、运行时纹理更新
-  - 常用方法：
-    - change_state(state: String)
-      - 切换状态（"INITIAL" / "PLACEMENT" / "FEEDING" / "PETTING"），显示对应 Sprite、播放 AnimationPlayer 中同名动画并调用 SoundManager 播放音效
-    - set_scale_value(value: float)
-      - 设置宠物缩放（限制在 [0.1,10]），并保存到 `user://setting.json`
-    - update_animation_texture(anim_name: String, texture_path: String)
-      - 在运行时为指定状态加载纹理并保存路径到配置
-    - get_animation_config() -> Dictionary
-      - 返回当前加载的配置字典，供 UI 使用
-    - update_and_save_animation_param(anim_name: String, param: String, value)
-      - 更新单个动画参数并应用与保存
-  - 配置加载/保存函数：
-    - _load_settings()：读取 `user://setting.json`（若不存在，复制 `res://data/setting.json`），并把纹理、hframes/vframes、scale 等应用到节点
-    - _save_settings()：把当前配置序列化并写回 `user://setting.json`
+## 核心架构
 
-- res://scripts/sound_manager.gd
-  - 负责：按状态播放对应音效
-  - 节点结构（在 MainScene 下）：
-    - SoundManager (Node)
-      - AudioInitial (AudioStreamPlayer)
-      - AudioPlacement (AudioStreamPlayer)
-      - AudioFeeding (AudioStreamPlayer)
-      - AudioPetting (AudioStreamPlayer)
-  - API：
-    - play_for_state(state: String)
-      - 接受 state 字符串："INITIAL" | "PLACEMENT" | "FEEDING" | "PETTING"，会调用对应子节点的 play()
+### 管理器系统 (Managers)
+- **ConfigManager** - 配置文件管理
+- **AnimationManager** - 动画资源管理和动态注册
+- **AIManager** - AI API 交互管理（基础实现）
+- **ThemeManager** - 主题管理
+- **InputManager** - 输入事件管理
 
-资源位置
+### 控制器系统 (Controllers)
+- **PetController** - 宠物行为控制
+- **MenuController** - 菜单界面控制
 
-- 精灵表和静态素材：`assets/animations/`（包含 placement.png、feeding.png、petting.png 等）
-- 音效资源：`assets/sounds/*.mp3`（项目中有占位 MP3，可替换为实际音效）
-- 模板配置：`res://data/setting.json`
+### 组件系统 (Components)
+- **Draggable** - 拖拽功能组件
+- **HoverDetector** - 悬停检测组件
+- **AIChatWindow** - AI 聊天窗口组件（开发中）
 
-常见修改与扩展
+## 动画系统
 
-- 添加/替换动画纹理：通过 `pet_script.gd` 的 `update_animation_texture()` 在运行时加载并保存路径，或直接在 `res://data/setting.json` 修改并重启运行时生效
-- 新增状态：需要：
-  1. 在场景中添加对应的 Sprite2D 节点并命名（与脚本中的映射一致）
-  2. 在 `AnimationPlayer` 中添加同名动画轨道（可选）
-  3. 在 `pet_script.gd` 的映射表中加入新的状态键与节点名
-  4. 在 `sound_manager.gd` 中添加对应的 AudioStreamPlayer 节点并在 play_for_state 中处理
+### 支持的动画类型
+- `initial` - 初始待机动画
+- `placement` - 放置动画
+- `feeding` - 投喂动画
+- `petting` - 抚摸动画
+- `cloud` - 云朵提示动画
 
-调试提示
+### 添加自定义动画
+1. 将精灵图放入 `assets/animations/` 目录
+2. 在配置文件中添加动画定义：
+```ini
+[animation_your_animation]
+texture="res://assets/animations/your_sprite.png"
+hframes=列数
+vframes=行数
+frames=总帧数
+fps=帧率
+frame_durations={"帧索引": 持续时间（用于确定帧长比例，缺省为1，最终帧显示时间为该值/帧率）}
+```
+3. AnimationManager 会自动加载并注册动画
 
-- 若纹理未显示，检查 `user://setting.json` 中的路径是否有效，或检查该资源是否可由 ResourceLoader.load() 正确加载
-- 若音效不播放，确认 `SoundManager` 节点存在于场景树的 `/root/MainScene` 下，且子节点已正确设置 AudioStream
-- 拖拽窗口功能在 Windows 上通过设置 `OS.window_move` 或直接设置 `get_window().position` 实现，确保输入事件未被 GUI 拦截
+## 开发说明
 
-贡献与许可
+### 技术栈
+- **引擎**: Godot 4.4
+- **脚本**: GDScript + C# (.NET 8.0)
+- **图形**: 2D 精灵动画（配置驱动）
+- **网络**: HTTPRequest (AI API 调用)
 
-项目采用 MIT 许可证；欢迎提交 Issue 或 Pull Request 来改进动画配置、UI、音效和配置持久化策略。
+### 关键特性
+- **配置驱动开发** - 动画和功能通过配置文件灵活定义
+- **事件总线系统** - 使用 EventBus 进行模块间通信
+- **异步初始化** - 确保组件初始化顺序的正确性
+- **状态机管理** - 管理宠物的不同行为状态
+
+## 开发状态
+
+### 已完成功能 ✅
+- 基础桌面宠物系统
+- 配置驱动的动画系统
+- 输入处理和拖拽功能
+- 配置管理系统
+- 悬停检测和交互提示
+- 透明窗口和桌面集成
+
+### 开发中功能 🚧
+- AI 聊天界面完善
+- AI 对话历史记录
+
+### 计划功能 📋
+- 多宠物支持
+- 更多的动画格式
+- 应用日志系统
+
+### 调试信息
+应用程序运行时的调试信息可在 Godot 编辑器的输出面板中查看。
+
+## 更新历史
+
+### v1.0.0
+- 初始版本发布
+- 配置驱动的动画系统
+- 可拖拽界面
+- 配置管理系统
+- AI 基础框架
+
+---
+
+**享受与你的桌面宠物的愉快时光！** 🐾
