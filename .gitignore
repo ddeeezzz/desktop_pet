@@ -1,6 +1,34 @@
+# Godot
 .godot/
+*.translation
+
+# .NET / C#
+bin/
+obj/
+*.csproj.user
+*.sln.dotSettings.user
+
+# Build artifacts
+DesktopPet.exe
+DesktopPet.pck
+data_DesktopPet_windows_x86_64/
+*.zip
+
+# IDEs
 .vscode/
 .claude/
+.idea/
+*.swp
+*.swo
+
+# Project specific
 TODO.md
 GEMINI.md
 CLAUDE.md
+*.old
+*.tmp
+*.bak
+
+# OS
+Thumbs.db
+desktop.ini

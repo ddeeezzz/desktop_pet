@@ -220,9 +220,9 @@ func _add_missing_sections(missing_sections: Array):
 			"AI":
 				_config.set_value("AI", "enabled", true)
 				_config.set_value("AI", "active_provider", "AI_Zhipu")
-				_config.set_value("AI_Zhipu", "api_key", "7fdfb483cb5a4424bedbdbadf7ae9e61.zsy62sEkrsHvcVL3")
-				_config.set_value("AI_Zhipu", "model", "glm-4-flash-250414")
-				_config.set_value("AI_Zhipu", "url", "https://open.bigmodel.cn/api/paas/v4/chat/completions")
+				_config.set_value("AI_Zhipu", "api_key", "your_api_key_here")
+				_config.set_value("AI_Zhipu", "model", "your_model")
+				_config.set_value("AI_Zhipu", "url", "your_api_url")
 
 
 ## 检查文件是否被修改（由计时器调用）。
@@ -267,9 +267,9 @@ func _create_default_config():
 	# --- AI 配置 ---
 	_config.set_value("AI", "enabled", true)
 	_config.set_value("AI", "active_provider", "AI_Zhipu")
-	_config.set_value("AI_Zhipu", "api_key", "7fdfb483cb5a4424bedbdbadf7ae9e61.zsy62sEkrsHvcVL3")
-	_config.set_value("AI_Zhipu", "model", "glm-4-flash-250414")
-	_config.set_value("AI_Zhipu", "url", "https://open.bigmodel.cn/api/paas/v4/chat/completions")
+	_config.set_value("AI_Zhipu", "api_key", "your_api_key_here")
+	_config.set_value("AI_Zhipu", "model", "your_model")
+	_config.set_value("AI_Zhipu", "url", "your_api_url")
 
 	# --- 动画配置 ---
 	var all_animation_configs = Constants.DefaultConfig.get_all_animation_configs()
